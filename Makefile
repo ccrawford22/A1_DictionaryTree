@@ -9,7 +9,7 @@ CXXFLAGS=-std=c++11 -Wall -g3 -c
 OBJS = dictionary.o countprefix.o 
 
 # Program name
-PROGRAM = countprefix
+PROGRAM = countprefix.exe
 
 # Rules format:
 # target : dependency1 dependency2 ... dependencyN
@@ -28,5 +28,5 @@ countprefix.o : dictionary.h countprefix.cpp
 	$(CXX) $(CXXFLAGS) countprefix.cpp
 	
 clean :
-	rm -f *.o $(PROGRAM)
+	rm -f *.o $(PROGRAM) *.exe
 
