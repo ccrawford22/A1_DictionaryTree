@@ -21,9 +21,9 @@ int DictionaryTree::charToDictIndex(char character)
     
     //Check for punctuation first
     if (character == '\0')      index = 29;
-    else if (character = '_')   index = 28;
-    else if (character = '-')   index = 27;
-    else if (character = '\'')  index = 26;
+    else if (character == '_')   index = 28;
+    else if (character == '-')   index = 27;
+    else if (character == '\'')  index = 26;
     //treat as alphanumeric
     else 
     {

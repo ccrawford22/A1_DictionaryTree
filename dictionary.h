@@ -4,7 +4,7 @@
 //Program 1
 
 #define NCHILD 30 /* a-z, ', -, _, terminator of word */
-#define MAP "abcdefghijklmnopqrstuvwxyz'-_"
+#define MAP "ABCDEFGHIJKLMNOPQRSTUVWXYZ'-_"
 #define TERMINAL_INDEX 29
 
 struct dictNode  
