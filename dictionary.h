@@ -4,7 +4,8 @@
 //Program 1
 
 #define NCHILD 30 /* a-z, ', -, _, terminator of word */
-#define MAP "abcefghijklmnopqrstuvwxyz'-_"
+#define MAP "abcdefghijklmnopqrstuvwxyz'-_"
+#define TERMINAL_INDEX 29
 
 struct dictNode  
 {  
@@ -31,7 +32,7 @@ struct dictNode
 };
 
 //String length counter
-static int length(const char *text)
+static int stringLength(const char *text)
 {
     int i = 0;
     while (text[i] != '\0')
@@ -43,18 +44,23 @@ static int length(const char *text)
 
 
 // Interface for Dictionary Tree class
-class TreeClass
+class DictionaryTree
 {
 private:
-    struct dictNode *root;
     dictNode *createNode();
+    int charToDictIndex(char character);
+    void remove(struct dictNode* node);
+
 public:
-    TreeClass();
+    struct dictNode *root;
+    DictionaryTree();
+    ~DictionaryTree();
 
     // changed void to bool based on program rec
     bool add(const char *wordBeingInserted = nullptr);
-    dictNode *findEndingNodeOfAStr(const char *strBeingSearched, struct dictNode *temp);
+    dictNode *findEndingNodeOfAStr(const char *strBeingSearched);
     void countWordsStartingFromANode(struct dictNode *temp, int &count);
+    void countWordsStartingFromAString(const char *strBeingSearched, int &count);
     void printRoot();
     void printNode(struct dictNode* node);
 };

@@ -3,56 +3,79 @@
 // RedID:824167663
 // Program 1
 #include "dictionary.h"
-#include <iostream>
+
+#include <cstring>
+#include <filesystem>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 #include <stdio.h>
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    cout << "Hello World!" << endl;
-//     if (argc != 3)
-//     {
-//         cerr << "Usage: " << argv[0] << " vocabulary_file text_file" << endl;
-//         return 1;
-//     }
+    if ( argc != 3)
+    {
+        cerr << "Usage: " << argv[0] << " vocabulary_file text_file" << endl;
+        return 1;
+    }
 
-//     TreeClass tree;
+    DictionaryTree tree;
 
-//     // read in the vocabulary file
-//     ifstream vocabFile(argv[1]);
-//     if (!vocabFile.is_open())
-//     {
-//         cerr << "Error: Failed to open vocabulary file " << argv[1] << endl;
-//         return 2;
-//     }
-//     string word;
-//     while (vocabFile >> word)
-//     {
-//         tree.add(word.c_str());
-//     }
-//     vocabFile.close();
+    ifstream vocabFile(argv[1], ifstream::in); //open file for parsing
+    if (!vocabFile.is_open())
+    {
+        cerr << "Error: Failed to open vocabulary file '" << argv[1] << "'" << endl;
+        return 2;
+    }
 
-//     // read in the text file
-//     ifstream textFile(argv[2]);
-//     if (!textFile.is_open())
-//     {
-//         cerr << "Error: Failed to open text file " << argv[2] << endl;
-//         return 3;
-//     }
-//     while (textFile >> word)
-//     {
-//         dictNode *node = tree.findEndingNodeOfAStr(word.c_str());
-//         if (node == nullptr)
-//         {
-//             cout << word << " not found in vocabulary tree" << endl;
-//             continue;
-//         }
-//         int count = 0;
-//         tree.countWordsStartingFromANode(node, count);
-//         cout << word << " appears " << count << " times" << endl;
-//     }
-//     textFile.close();
+    //parse each word
+    string line;
+    //delimiter string to seperate words
+     const char *delimiters = "\n\r !\"#$%&()*+,./0123456789:;<=>?@[\\]^`{|}~";
+     while (getline(vocabFile, line))
+     {
+        char *word = strtok((char*)line.c_str(), delimiters);
+        while (word != nullptr)
+        {
+            //call add method to insert word to build dictionary tree
+            if (!tree.add(word))
+            {
+                //handle error from insertion result
+                cout << "\tUnable to add word '" << word << "' to dictionary tree." << endl;
+            }
+            //read next word
+            word = strtok(NULL, delimiters);
+        }
+     }
 
+     vocabFile.close();
+
+     //read in test text file
+     ifstream textFile(argv[2]);
+     if (!textFile.is_open()) 
+     {
+        cerr << "Error: Failed to open text file" << argv[2] << endl;
+        return 3;
+     }
+
+     while (getline(textFile, line)) 
+     {
+        char *word = strtok((char*)line.c_str(),delimiters);
+        while (word != nullptr)
+        {
+            int count = 0;
+            //count # of words that start with a substring in dictionary tree
+            tree.countWordsStartingFromAString(word, count);
+            //print count
+            cout << word << " " << count << endl;
+            //read next word
+            word = strtok(NULL, delimiters);
+        }
+     }
+    textFile.close();
+    
+    
     return 0;
 }
